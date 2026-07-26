@@ -18,6 +18,14 @@ import type { WorkflowRun } from "@/types/workflow";
 
 const icons = [UploadCloud, ScanSearch, WandSparkles, Sparkles, Clapperboard, Video];
 const nodeTypes = { workflow: WorkflowNode };
+const demoSteps = [
+  ["upload", "Product input", "Securely prepare the product image"],
+  ["analyze", "Visual analysis", "Read packaging, shape, and key details"],
+  ["concept", "Creative direction", "Build a native UGC concept and prompt"],
+  ["generate", "Higgsfield studio", "Generate a vertical presenter-led ad"],
+  ["render", "Render output", "Finalize audio, motion, and delivery"],
+  ["deliver", "Ready to review", "Make the video available in studio"],
+] as const;
 
 function buildFlow(run: WorkflowRun | null): { nodes: Node[]; edges: Edge[] } {
   const fallback = [
@@ -53,13 +61,13 @@ export function WorkflowStudio() {
   const progress = run ? Math.round(run.steps.reduce((sum, step) => sum + step.progress, 0) / run.steps.length) : 0;
 
   useEffect(() => {
-    if (!run || ["completed", "failed"].includes(run.status)) return;
+    if (publicDemo || !run || ["completed", "failed"].includes(run.status)) return;
     const timer = setInterval(async () => {
       const response = await fetch(`/api/workflows/${run.id}`, { cache: "no-store" });
       if (response.ok) setRun(await response.json());
     }, 900);
     return () => clearInterval(timer);
-  }, [run]);
+  }, [run, publicDemo]);
 
   useEffect(() => {
     if (run?.status === "completed") {
@@ -102,6 +110,30 @@ export function WorkflowStudio() {
 
   async function startWorkflow(demo = false) {
     if (!demo && !file) return toast.error("Drop in a product image first.");
+    if (publicDemo) {
+      const now = new Date().toISOString();
+      const publicRun: WorkflowRun = {
+        id: `public-demo-${Date.now()}`,
+        name: "Public studio demo",
+        status: "running",
+        createdAt: now,
+        updatedAt: now,
+        prompt,
+        generateAudio,
+        demo: true,
+        steps: demoSteps.map(([id, label, description], index) => ({ id, label, description, status: index === 0 ? "completed" : "pending", progress: index === 0 ? 100 : 0 })),
+      };
+      setRun(publicRun);
+      toast.success("Public demo started");
+      for (let index = 1; index < publicRun.steps.length; index += 1) {
+        await new Promise((resolve) => window.setTimeout(resolve, index === 3 ? 1800 : 650));
+        setRun((current) => current ? { ...current, updatedAt: new Date().toISOString(), steps: current.steps.map((step, stepIndex) => stepIndex === index ? { ...step, status: "running", progress: 35, startedAt: new Date().toISOString(), message: index === 3 ? "Demonstrating the Higgsfield generation stage" : step.description } : step) } : current);
+        await new Promise((resolve) => window.setTimeout(resolve, index === 3 ? 1800 : 650));
+        setRun((current) => current ? { ...current, updatedAt: new Date().toISOString(), steps: current.steps.map((step, stepIndex) => stepIndex === index ? { ...step, status: "completed", progress: 100, completedAt: new Date().toISOString() } : step) } : current);
+      }
+      setRun((current) => current ? { ...current, status: "completed", updatedAt: new Date().toISOString(), outputUrl: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" } : current);
+      return;
+    }
     setSubmitting(true);
     const form = new FormData();
     if (file) form.set("image", file);
