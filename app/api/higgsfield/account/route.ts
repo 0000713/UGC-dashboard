@@ -14,6 +14,12 @@ const accountSchema = z.object({
 });
 
 export async function GET() {
+  if (process.env.UGC_RUNTIME_MODE === "public-demo") {
+    return NextResponse.json(
+      { mode: "public-demo", connected: false, message: "Connect the Higgsfield API to enable live credits and generation." },
+      { headers: { "Cache-Control": "no-store" } },
+    );
+  }
   try {
     const { stdout } = await execFileAsync("higgsfield", ["account", "status", "--json"], {
       timeout: 10_000,
@@ -29,4 +35,3 @@ export async function GET() {
     return NextResponse.json({ error: "Could not sync Higgsfield account." }, { status: 503 });
   }
 }
-

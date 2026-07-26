@@ -221,6 +221,17 @@ pnpm dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
+### Safe public deployment
+
+Set both runtime variables to `public-demo` when deploying without the Higgsfield API:
+
+```env
+UGC_RUNTIME_MODE=public-demo
+NEXT_PUBLIC_UGC_RUNTIME_MODE=public-demo
+```
+
+This actively disables local CLI account access and real generation. The primary action runs the credit-free demonstration workflow instead. Do not attempt to copy a local Higgsfield CLI session into a public cloud deployment.
+
 ## Using UGC Genie
 
 1. Choose or drag a JPG, PNG, or WebP product image into the product card.
@@ -315,4 +326,3 @@ The software is provided without warranty. The author and copyright holders are 
 <div align="center">
 Built as an open foundation for creators, agencies, consultants, and product teams.
 </div>
-

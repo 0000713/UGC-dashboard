@@ -39,6 +39,7 @@ function buildFlow(run: WorkflowRun | null): { nodes: Node[]; edges: Edge[] } {
 }
 
 export function WorkflowStudio() {
+  const publicDemo = process.env.NEXT_PUBLIC_UGC_RUNTIME_MODE === "public-demo";
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
@@ -125,8 +126,8 @@ export function WorkflowStudio() {
         <div className="flex items-center gap-3"><SidebarTrigger className="md:hidden"/><div><p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#8b8790]">Create / New production</p><h1 className="text-lg font-extrabold tracking-[-0.04em] md:text-xl">Product-to-UGC studio</h1></div></div>
         <div className="flex items-center gap-3">
           {run && <Badge variant="outline" className="hidden rounded-full border-0 bg-[#e8e6e1] px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-wider sm:flex">{progress}% complete</Badge>}
-          <Button onClick={() => startWorkflow(false)} disabled={submitting || run?.status === "running"} className="h-11 rounded-2xl bg-[#24232a] px-4 font-extrabold text-white shadow-lg hover:bg-[#34323b]">
-            {submitting || run?.status === "running" ? <RefreshCw className="animate-spin"/> : <Play className="fill-[#ff775f] text-[#ff775f]"/>} Run workflow
+          <Button onClick={() => startWorkflow(publicDemo)} disabled={submitting || run?.status === "running"} className="h-11 rounded-2xl bg-[#24232a] px-4 font-extrabold text-white shadow-lg hover:bg-[#34323b]">
+            {submitting || run?.status === "running" ? <RefreshCw className="animate-spin"/> : <Play className="fill-[#ff775f] text-[#ff775f]"/>} {publicDemo ? "Run demo" : "Run workflow"}
           </Button>
         </div>
       </header>
@@ -145,7 +146,7 @@ export function WorkflowStudio() {
             <div className="rounded-[26px] bg-[#f7f6f2] p-4 shadow-sm">
               <div className="mb-3 flex items-center justify-between"><div><p className="eyebrow">02 · Direction</p><h2 className="panel-title">Tell the creator what matters</h2></div><Button type="button" variant="secondary" size="sm" onClick={improvePrompt} disabled={improvingPrompt} className="h-9 rounded-xl bg-[#ebeae6] px-3 text-[11px] font-extrabold hover:bg-[#dfdcd5]"><WandSparkles className={improvingPrompt ? "animate-pulse text-[#ff775f]" : "text-[#ff775f]"}/>{improvingPrompt ? "Improving…" : "Improve prompt"}</Button></div>
               <Textarea value={prompt} onChange={(e) => setPrompt(e.target.value)} className="min-h-28 resize-none rounded-[20px] border-0 bg-[#ebeae6] p-4 text-sm leading-6 shadow-inner focus-visible:ring-[#ff775f]" />
-              <div className="mt-3 flex flex-wrap items-center gap-3"><Button type="button" variant="outline" size="sm" onClick={() => startWorkflow(true)} disabled={submitting || run?.status === "running"} className="h-8 rounded-xl border-[#d4d1cb] bg-transparent px-3 text-[10px] font-extrabold">Preview without credits</Button><div className="ml-auto flex items-center gap-3"><span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">9:16 · 15 sec</span><div className="flex items-center gap-2 rounded-xl bg-[#ebeae6] px-3 py-1.5"><Switch id="audio-output" checked={generateAudio} onCheckedChange={setGenerateAudio} aria-label="Generate audio" className="data-[state=checked]:bg-[#ff775f]"/><label htmlFor="audio-output" className="cursor-pointer text-[10px] font-extrabold uppercase tracking-wider">Audio {generateAudio ? "on" : "off"}</label></div></div></div>
+              <div className="mt-3 flex flex-wrap items-center gap-3">{!publicDemo && <Button type="button" variant="outline" size="sm" onClick={() => startWorkflow(true)} disabled={submitting || run?.status === "running"} className="h-8 rounded-xl border-[#d4d1cb] bg-transparent px-3 text-[10px] font-extrabold">Preview without credits</Button>}{publicDemo && <Badge variant="outline" className="h-8 rounded-xl border-[#d4d1cb] bg-transparent px-3 text-[10px] font-extrabold">Safe public demo · no credits</Badge>}<div className="ml-auto flex items-center gap-3"><span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">9:16 · 15 sec</span><div className="flex items-center gap-2 rounded-xl bg-[#ebeae6] px-3 py-1.5"><Switch id="audio-output" checked={generateAudio} onCheckedChange={setGenerateAudio} aria-label="Generate audio" className="data-[state=checked]:bg-[#ff775f]"/><label htmlFor="audio-output" className="cursor-pointer text-[10px] font-extrabold uppercase tracking-wider">Audio {generateAudio ? "on" : "off"}</label></div></div></div>
             </div>
           </div>
 

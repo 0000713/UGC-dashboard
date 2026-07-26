@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Coins, RefreshCw, Sparkles } from "lucide-react";
 
-type Account = { credits: number; email: string; plan: string; syncedAt: string };
+type Account = { credits: number; email: string; plan: string; syncedAt: string; mode?: "public-demo"; connected?: boolean; message?: string };
 
 function formatSyncTime(value: string) {
   return new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit" }).format(new Date(value));
@@ -56,7 +56,12 @@ export function HiggsfieldAccountCard() {
         </button>
       </div>
 
-      {error && !account ? (
+      {account?.mode === "public-demo" ? (
+        <div className="relative mt-4">
+          <div className="flex items-center gap-2"><Sparkles className="size-4 text-[#ff775f]"/><p className="text-sm font-extrabold">Public demo</p></div>
+          <p className="mt-2 text-[10px] leading-4 text-white/50">Higgsfield credentials are not connected. Demo runs do not consume credits.</p>
+        </div>
+      ) : error && !account ? (
         <div className="relative mt-4"><p className="text-sm font-extrabold">Sync unavailable</p><p className="mt-1 text-[10px] leading-4 text-white/50">Check the local Higgsfield session, then refresh.</p></div>
       ) : (
         <>

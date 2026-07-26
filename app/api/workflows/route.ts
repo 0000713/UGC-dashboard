@@ -15,7 +15,8 @@ export async function GET() {
 
 export async function POST(request: Request) {
   const form = await request.formData();
-  const demo = form.get("demo") === "true";
+  const publicDemo = process.env.UGC_RUNTIME_MODE === "public-demo";
+  const demo = publicDemo || form.get("demo") === "true";
   const file = form.get("image");
   const prompt = String(form.get("prompt") || "Show why this product belongs in a creator's daily routine").slice(0, 1200);
   const generateAudio = form.get("generateAudio") !== "false";
@@ -27,7 +28,7 @@ export async function POST(request: Request) {
   const id = randomUUID();
   let productImagePath: string | undefined;
   let productImageUrl: string | undefined;
-  if (file instanceof File) {
+  if (file instanceof File && !publicDemo) {
     if (!file.type.startsWith("image/") || file.size > 12 * 1024 * 1024) {
       return NextResponse.json({ error: "Use a JPG, PNG, or WebP image smaller than 12 MB." }, { status: 400 });
     }

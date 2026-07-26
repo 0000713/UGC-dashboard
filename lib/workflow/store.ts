@@ -2,7 +2,9 @@ import { mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import type { WorkflowRun } from "@/types/workflow";
 
-const runsDirectory = path.join(process.cwd(), "data", "runs");
+const runsDirectory = process.env.UGC_RUNTIME_MODE === "public-demo"
+  ? path.join("/tmp", "ugc-genie-runs")
+  : path.join(process.cwd(), "data", "runs");
 
 async function ensureDirectory() {
   await mkdir(runsDirectory, { recursive: true });
@@ -41,4 +43,3 @@ export async function updateStep(
   await saveRun(run);
   return run;
 }
-
