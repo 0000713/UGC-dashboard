@@ -321,6 +321,23 @@ UGC Genie is free and open-source software licensed under the [MIT License](LICE
 
 The software is provided without warranty. The author and copyright holders are not liable for claims, damages, or other liability arising from its use.
 
+## Author
+
+<table>
+  <tr>
+    <td width="112" align="center">
+      <img src="https://avatars.githubusercontent.com/u/114257565?v=4" width="88" alt="Harshith Vaddiparthy" />
+    </td>
+    <td>
+      <strong>Harshith Vaddiparthy</strong><br />
+      Builder, product operator, and growth-focused technologist creating systems that make advanced AI workflows understandable and reusable.<br /><br />
+      <a href="https://www.linkedin.com/in/harshith-vaddiparthy/">LinkedIn</a> ·
+      <a href="https://github.com/harshith-vaddiparthy">GitHub</a> ·
+      <a href="https://www.harshith.io/">Website</a>
+    </td>
+  </tr>
+</table>
+
 ---
 
 <div align="center">

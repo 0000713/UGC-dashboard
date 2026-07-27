@@ -39,6 +39,7 @@ yarn-error.log*
 /public/uploads/
 /output/playwright/
 /.playwright-cli/
+/tmp/
 
 # vercel
 .vercel
